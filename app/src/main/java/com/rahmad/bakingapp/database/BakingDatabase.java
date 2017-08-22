@@ -1,5 +1,6 @@
 package com.rahmad.bakingapp.database;
 
+import net.simonvt.schematic.annotation.Database;
 import net.simonvt.schematic.annotation.Table;
 
 /**
@@ -7,8 +8,8 @@ import net.simonvt.schematic.annotation.Table;
  * inbox.rahmad@gmail.com
  * Copyright 2017
  */
-
-public class BakingDatabase {
+@Database(version = BakingDatabase.VERSION)
+public final class BakingDatabase {
 
   public static final int VERSION = 1;
 

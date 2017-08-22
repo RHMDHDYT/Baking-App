@@ -14,7 +14,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 @ContentProvider(
     authority = BakingProvider.AUTHORITY,
     database = BakingDatabase.class,
-    packageName = "com.rahmad.bakingapp.provider")
+    packageName = "com.rahmad.bakingapp.database.provider")
 public class BakingProvider {
 
   private BakingProvider() {
@@ -26,8 +26,8 @@ public class BakingProvider {
   public static class Recipes {
 
     @ContentUri(
-        path = "lists",
-        type = "vnd.android.cursor.dir/list",
+        path = "recipes",
+        type = "vnd.android.cursor.dir/recipe",
         defaultSort = RecipeColumns.NAME + " ASC")
     public static final Uri RECIPES = Uri.parse("content://" + AUTHORITY + "/recipes");
   }
@@ -36,8 +36,8 @@ public class BakingProvider {
   public static class Ingredients {
 
     @ContentUri(
-        path = "lists",
-        type = "vnd.android.cursor.dir/list",
+        path = "ingredients",
+        type = "vnd.android.cursor.dir/ingredient",
         defaultSort = IngredientsColumns.INGREDIENT_ID + " ASC")
     public static final Uri INGREDIENTS = Uri.parse("content://" + AUTHORITY + "/ingredients");
   }
@@ -46,8 +46,8 @@ public class BakingProvider {
   public static class Steps {
 
     @ContentUri(
-        path = "lists",
-        type = "vnd.android.cursor.dir/list",
+        path = "steps",
+        type = "vnd.android.cursor.dir/step",
         defaultSort = StepsColumns.STEP_ID + " ASC")
     public static final Uri STEPS = Uri.parse("content://" + AUTHORITY + "/steps");
   }

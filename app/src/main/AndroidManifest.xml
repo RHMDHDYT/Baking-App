@@ -31,7 +31,7 @@
 
     <provider
       android:authorities="com.rahmad.bakingapp.database.BakingProvider"
-      android:name="com.rahmad.bakingapp.provider.BakingProvider"
+      android:name="com.rahmad.bakingapp.database.provider.BakingProvider"
       android:exported="false" />
   </application>
 
