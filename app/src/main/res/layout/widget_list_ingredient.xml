@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/white"
+  >
+
+  <TextView
+    android:id="@+id/widget_recipe_name"
+    android:textStyle="bold"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:background="@color/colorPrimary"
+    android:gravity="center_horizontal"
+    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+    android:textColor="@android:color/white"/>
+
+  <ListView
+    android:id="@+id/ing_widget_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/widget_recipe_name"
+    android:background="@drawable/bitmap_tile">
+
+  </ListView>
+
+
+</RelativeLayout>

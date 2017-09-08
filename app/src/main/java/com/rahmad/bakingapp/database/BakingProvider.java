@@ -10,45 +10,65 @@ import net.simonvt.schematic.annotation.TableEndpoint;
  * inbox.rahmad@gmail.com
  * Copyright 2017
  */
-
 @ContentProvider(
     authority = BakingProvider.AUTHORITY,
     database = BakingDatabase.class,
     packageName = "com.rahmad.bakingapp.database.provider")
 public class BakingProvider {
 
+  /**
+   * The constant AUTHORITY.
+   */
+  public static final String AUTHORITY = "com.rahmad.bakingapp.database.BakingProvider";
+
   private BakingProvider() {
   }
 
-  public static final String AUTHORITY = "com.rahmad.bakingapp.database.BakingProvider";
-
+  /**
+   * The type Recipes.
+   */
   @TableEndpoint(table = BakingDatabase.RECIPES)
   public static class Recipes {
 
+    /**
+     * The constant CONTENT_URI.
+     */
     @ContentUri(
         path = "recipes",
         type = "vnd.android.cursor.dir/recipe",
-        defaultSort = RecipeColumns.NAME + " ASC")
-    public static final Uri RECIPES = Uri.parse("content://" + AUTHORITY + "/recipes");
+        defaultSort = RecipeColumns.RECIPE_ID + " ASC")
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/recipes");
   }
 
+  /**
+   * The type Ingredients.
+   */
   @TableEndpoint(table = BakingDatabase.INGREDIENTS)
   public static class Ingredients {
 
+    /**
+     * The constant CONTENT_URI.
+     */
     @ContentUri(
         path = "ingredients",
         type = "vnd.android.cursor.dir/ingredient",
         defaultSort = IngredientsColumns.INGREDIENT_ID + " ASC")
-    public static final Uri INGREDIENTS = Uri.parse("content://" + AUTHORITY + "/ingredients");
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/ingredients");
   }
 
+  /**
+   * The type Steps.
+   */
   @TableEndpoint(table = BakingDatabase.STEPS)
   public static class Steps {
 
+    /**
+     * The constant CONTENT_URI.
+     */
     @ContentUri(
         path = "steps",
         type = "vnd.android.cursor.dir/step",
         defaultSort = StepsColumns.STEP_ID + " ASC")
-    public static final Uri STEPS = Uri.parse("content://" + AUTHORITY + "/steps");
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/steps");
   }
 }

@@ -23,7 +23,7 @@ public class DummyContent {
    */
   public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
-  private static final int COUNT = 25;
+  private static final int COUNT = 15;
 
   static {
     // Add some sample items.
@@ -55,10 +55,26 @@ public class DummyContent {
    */
   public static class DummyItem {
 
+    /**
+     * The Id.
+     */
     public final String id;
+    /**
+     * The Content.
+     */
     public final String content;
+    /**
+     * The Details.
+     */
     public final String details;
 
+    /**
+     * Instantiates a new Dummy item.
+     *
+     * @param id the id
+     * @param content the content
+     * @param details the details
+     */
     public DummyItem(String id, String content, String details) {
       this.id = id;
       this.content = content;

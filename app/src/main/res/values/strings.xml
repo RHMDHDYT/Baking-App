@@ -1,4 +1,15 @@
 <resources>
   <string name="app_name">Baking App</string>
-  <string name="title_item_detail">Item Detail</string>
+
+  <string name="servings_placeholder">Servings: %1$d</string>
+  <string name="failed_load_data_caption">Failed to load data.</string>
+  <string name="no_internet_connection_caption">Oops, No internet connection.</string>
+  <string name="no_data_caption">No Data Found.</string>
+  <string name="ingredients_caption">Ingredients</string>
+  <string name="steps_caption">Steps</string>
+  <string name="next_placeholder">Next: %s</string>
+  <string name="next_caption">Next</string>
+  <string name="back_placeholder">Previous: %s</string>
+  <string name="back_caption">Previous</string>
+  <string name="no_fav_recipe_caption">No Favorite Recipe found.</string>
 </resources>
