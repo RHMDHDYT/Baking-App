@@ -1,6 +1,7 @@
 package com.rahmad.bakingapp.model;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 import com.rahmad.bakingapp.model.pojo.StepsItem;
 
 /**
@@ -8,28 +9,15 @@ import com.rahmad.bakingapp.model.pojo.StepsItem;
  * inbox.rahmad@gmail.com
  * Copyright 2017
  */
-public class StepFragmentModel implements android.os.Parcelable {
+public class StepFragmentModel implements Parcelable {
 
-  /**
-   * The constant CREATOR.
-   */
-  public static final Creator<StepFragmentModel> CREATOR = new Creator<StepFragmentModel>() {
-    @Override
-    public StepFragmentModel createFromParcel(Parcel source) {
-      return new StepFragmentModel(source);
-    }
-
-    @Override
-    public StepFragmentModel[] newArray(int size) {
-      return new StepFragmentModel[size];
-    }
-  };
   private String stepId;
   private StepsItem currentStepItem;
   private String url;
   private String nextTitle;
   private String previousTitle;
   private Boolean standAloneMode;
+  private Long videoPosition;
 
   /**
    * Instantiates a new Step fragment model.
@@ -37,18 +25,13 @@ public class StepFragmentModel implements android.os.Parcelable {
   public StepFragmentModel() {
   }
 
-  /**
-   * Instantiates a new Step fragment model.
-   *
-   * @param in the in
-   */
-  protected StepFragmentModel(Parcel in) {
-    this.stepId = in.readString();
-    this.currentStepItem = in.readParcelable(StepsItem.class.getClassLoader());
-    this.url = in.readString();
-    this.nextTitle = in.readString();
-    this.previousTitle = in.readString();
-    this.standAloneMode = (Boolean) in.readValue(Boolean.class.getClassLoader());
+
+  public Long getVideoPosition() {
+    return videoPosition;
+  }
+
+  public void setVideoPosition(Long videoPosition) {
+    this.videoPosition = videoPosition;
   }
 
   /**
@@ -172,5 +155,28 @@ public class StepFragmentModel implements android.os.Parcelable {
     dest.writeString(this.nextTitle);
     dest.writeString(this.previousTitle);
     dest.writeValue(this.standAloneMode);
+    dest.writeValue(this.videoPosition);
   }
+
+  protected StepFragmentModel(Parcel in) {
+    this.stepId = in.readString();
+    this.currentStepItem = in.readParcelable(StepsItem.class.getClassLoader());
+    this.url = in.readString();
+    this.nextTitle = in.readString();
+    this.previousTitle = in.readString();
+    this.standAloneMode = (Boolean) in.readValue(Boolean.class.getClassLoader());
+    this.videoPosition = (Long) in.readValue(Long.class.getClassLoader());
+  }
+
+  public static final Creator<StepFragmentModel> CREATOR = new Creator<StepFragmentModel>() {
+    @Override
+    public StepFragmentModel createFromParcel(Parcel source) {
+      return new StepFragmentModel(source);
+    }
+
+    @Override
+    public StepFragmentModel[] newArray(int size) {
+      return new StepFragmentModel[size];
+    }
+  };
 }

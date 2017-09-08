@@ -24,6 +24,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -99,6 +100,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
   private String previousTitle = "";
   private Boolean initialMode;
   private Boolean standAloneMode;
+  private Long videoPosition = C.TIME_UNSET;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,17 +126,43 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
     return rootView;
   }
 
+  @Override
+  public void onPause() {
+    super.onPause();
+    if (mExoPlayer != null) {
+      videoPosition = mExoPlayer.getCurrentPosition();
+    }
+    releasePlayer();
+    if (mMediaSession != null) {
+      mMediaSession.setActive(false);
+    }
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    if (mExoPlayer != null) {
+      videoPosition = mExoPlayer.getCurrentPosition();
+    }
+
+    releasePlayer();
+    if (mMediaSession != null) {
+      mMediaSession.setActive(false);
+    }
+  }
 
   private void getRecipesDataInstance(Bundle savedInstanceState) {
     //null and check saved instance state
     if (savedInstanceState != null && savedInstanceState.containsKey(Constant.KEY_STATE_MODEL)) {
-      StepFragmentModel stepFragmentModel = savedInstanceState.getParcelable(Constant.KEY_STATE_MODEL);
+      StepFragmentModel stepFragmentModel = savedInstanceState
+          .getParcelable(Constant.KEY_STATE_MODEL);
       stepId = stepFragmentModel.getStepId();
       currentStepItem = stepFragmentModel.getCurrentStepItem();
       url = stepFragmentModel.getUrl();
       nextTitle = stepFragmentModel.getNextTitle();
       previousTitle = stepFragmentModel.getPreviousTitle();
       standAloneMode = stepFragmentModel.getStandAloneMode();
+      videoPosition = stepFragmentModel.getVideoPosition();
     }
 
     init();
@@ -153,6 +181,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
     stepFragmentModel.setNextTitle(nextTitle);
     stepFragmentModel.setPreviousTitle(previousTitle);
     stepFragmentModel.setStandAloneMode(standAloneMode);
+    stepFragmentModel.setVideoPosition(videoPosition);
 
     outState.putParcelable(Constant.KEY_STATE_MODEL, stepFragmentModel);
 
@@ -206,6 +235,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
         int tempInt = Integer.parseInt(stepId);
         tempInt = tempInt - 1;
         stepId = String.valueOf(tempInt);
+        videoPosition = C.TIME_UNSET;
 
         mappingCurrentStep();
         releasePlayer();
@@ -222,6 +252,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
         int tempInt = Integer.parseInt(stepId);
         tempInt = tempInt + 1;
         stepId = String.valueOf(tempInt);
+        videoPosition = C.TIME_UNSET;
 
         mappingCurrentStep();
         releasePlayer();
@@ -297,11 +328,16 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
    */
   private void initializePlayer(Uri mediaUri) {
     if (mExoPlayer == null) {
+
       // Create an instance of the ExoPlayer.
       TrackSelector trackSelector = new DefaultTrackSelector();
       LoadControl loadControl = new DefaultLoadControl();
       mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
       videoPlayer.setPlayer(mExoPlayer);
+
+      if (videoPosition != C.TIME_UNSET) {
+        mExoPlayer.seekTo(videoPosition);
+      }
 
       // Set the ExoPlayer.EventListener to this activity.
       mExoPlayer.addListener(this);
