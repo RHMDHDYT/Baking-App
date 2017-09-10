@@ -21,6 +21,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,6 +98,13 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
   ImageView imageViewThumbnail;
 
   /**
+   * The Layout thumbnail.
+   */
+  @Nullable
+  @BindView(R.id.layout_thumbnail)
+  RelativeLayout layoutThumbnail;
+
+  /**
    * The Unbinder.
    */
   Unbinder unbinder;
@@ -164,13 +172,13 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
 
   private void showImageThumbnail() {
     videoPlayer.setVisibility(View.GONE);
-    imageViewThumbnail.setVisibility(View.VISIBLE);
+    layoutThumbnail.setVisibility(View.VISIBLE);
     Picasso.with(getContext()).load(currentStepItem.getThumbnailURL()).into(imageViewThumbnail);
   }
 
   private void hideImageThumbnail() {
     videoPlayer.setVisibility(View.VISIBLE);
-    imageViewThumbnail.setVisibility(View.GONE);
+    layoutThumbnail.setVisibility(View.GONE);
   }
 
   private void getRecipesDataInstance(Bundle savedInstanceState) {
@@ -260,6 +268,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
         tempInt = tempInt - 1;
         stepId = String.valueOf(tempInt);
         videoPosition = C.TIME_UNSET;
+        showImageThumbnail = true;
 
         mappingCurrentStep();
         releasePlayer();
@@ -277,6 +286,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
         tempInt = tempInt + 1;
         stepId = String.valueOf(tempInt);
         videoPosition = C.TIME_UNSET;
+        showImageThumbnail = true;
 
         mappingCurrentStep();
         releasePlayer();
@@ -316,6 +326,15 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
         textStep.setVisibility(View.GONE);
 
         hideSystemUI();
+      }
+    } else {
+      if (!currentStepItem.getThumbnailURL().isEmpty()) {
+        if (showImageThumbnail) {
+          showImageThumbnail();
+          showImageThumbnail = false;
+        }
+      } else {
+        hideImageThumbnail();
       }
     }
 
