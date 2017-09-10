@@ -32,8 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/ic_salad"
         card_view:layout_constraintLeft_toLeftOf="parent"
-        card_view:layout_constraintTop_toTopOf="parent"
-        card_view:layout_constraintVertical_bias="0.501"/>
+        card_view:layout_constraintTop_toTopOf="parent"/>
 
       <android.support.constraint.Guideline
         android:id="@+id/guideline"

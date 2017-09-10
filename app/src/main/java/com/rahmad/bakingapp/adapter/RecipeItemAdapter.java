@@ -5,11 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.rahmad.bakingapp.R;
 import com.rahmad.bakingapp.model.pojo.RecipesItem;
+import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
@@ -54,6 +56,11 @@ public class RecipeItemAdapter extends RecyclerView
             .getServings());
     holder.servingsTextView.setText(servingContent);
 
+    String imageUrl = mValues.get(position).getImage();
+    if (!imageUrl.isEmpty()) {
+      Picasso.with(context).load(imageUrl).into(holder.imageView);
+    }
+
   }
 
   @Override
@@ -93,6 +100,12 @@ public class RecipeItemAdapter extends RecyclerView
      */
     @BindView(R.id.text_servings_amount)
     TextView servingsTextView;
+
+    /**
+     * The Image view.
+     */
+    @BindView(R.id.imageView)
+    ImageView imageView;
 
     /**
      * Instantiates a new View holder.
