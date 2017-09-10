@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -45,6 +46,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.rahmad.bakingapp.model.StepFragmentModel;
 import com.rahmad.bakingapp.model.pojo.StepsItem;
+import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
@@ -86,6 +88,14 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
   @Nullable
   @BindView(R.id.button_next)
   Button buttonNext;
+
+  /**
+   * The Image view thumbnail.
+   */
+  @Nullable
+  @BindView(R.id.image_view_thumbnail)
+  ImageView imageViewThumbnail;
+
   /**
    * The Unbinder.
    */
@@ -101,6 +111,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
   private Boolean initialMode;
   private Boolean standAloneMode;
   private Long videoPosition = C.TIME_UNSET;
+  private Boolean showImageThumbnail = true;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -151,6 +162,17 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
     }
   }
 
+  private void showImageThumbnail() {
+    videoPlayer.setVisibility(View.GONE);
+    imageViewThumbnail.setVisibility(View.VISIBLE);
+    Picasso.with(getContext()).load(currentStepItem.getThumbnailURL()).into(imageViewThumbnail);
+  }
+
+  private void hideImageThumbnail() {
+    videoPlayer.setVisibility(View.VISIBLE);
+    imageViewThumbnail.setVisibility(View.GONE);
+  }
+
   private void getRecipesDataInstance(Bundle savedInstanceState) {
     //null and check saved instance state
     if (savedInstanceState != null && savedInstanceState.containsKey(Constant.KEY_STATE_MODEL)) {
@@ -163,6 +185,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
       previousTitle = stepFragmentModel.getPreviousTitle();
       standAloneMode = stepFragmentModel.getStandAloneMode();
       videoPosition = stepFragmentModel.getVideoPosition();
+      showImageThumbnail = stepFragmentModel.getShowImageThumbnail();
     }
 
     init();
@@ -182,6 +205,7 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
     stepFragmentModel.setPreviousTitle(previousTitle);
     stepFragmentModel.setStandAloneMode(standAloneMode);
     stepFragmentModel.setVideoPosition(videoPosition);
+    stepFragmentModel.setShowImageThumbnail(showImageThumbnail);
 
     outState.putParcelable(Constant.KEY_STATE_MODEL, stepFragmentModel);
 
@@ -262,6 +286,13 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
         setStepUiContent();
       }
     });
+
+    imageViewThumbnail.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        initializePlayer(Uri.parse(currentStepItem.getVideoURL()));
+      }
+    });
   }
 
   private void initializePlayer() {
@@ -298,7 +329,16 @@ public class RecipeVideoFragment extends Fragment implements EventListener {
       videoPlayer.setVisibility(View.GONE);
     } else {
       videoPlayer.setVisibility(View.VISIBLE);
-      initializePlayer(Uri.parse(url));
+
+      if (!currentStepItem.getThumbnailURL().isEmpty()) {
+        if (showImageThumbnail) {
+          showImageThumbnail();
+          showImageThumbnail = false;
+        }
+      } else {
+        hideImageThumbnail();
+        initializePlayer(Uri.parse(url));
+      }
     }
   }
 

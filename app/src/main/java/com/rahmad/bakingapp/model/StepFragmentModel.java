@@ -18,6 +18,7 @@ public class StepFragmentModel implements Parcelable {
   private String previousTitle;
   private Boolean standAloneMode;
   private Long videoPosition;
+  private Boolean showImageThumbnail;
 
   /**
    * Instantiates a new Step fragment model.
@@ -26,10 +27,38 @@ public class StepFragmentModel implements Parcelable {
   }
 
 
+  /**
+   * Gets show image thumbnail.
+   *
+   * @return the show image thumbnail
+   */
+  public Boolean getShowImageThumbnail() {
+    return showImageThumbnail;
+  }
+
+  /**
+   * Sets show image thumbnail.
+   *
+   * @param showImageThumbnail the show image thumbnail
+   */
+  public void setShowImageThumbnail(Boolean showImageThumbnail) {
+    this.showImageThumbnail = showImageThumbnail;
+  }
+
+  /**
+   * Gets video position.
+   *
+   * @return the video position
+   */
   public Long getVideoPosition() {
     return videoPosition;
   }
 
+  /**
+   * Sets video position.
+   *
+   * @param videoPosition the video position
+   */
   public void setVideoPosition(Long videoPosition) {
     this.videoPosition = videoPosition;
   }
@@ -156,8 +185,14 @@ public class StepFragmentModel implements Parcelable {
     dest.writeString(this.previousTitle);
     dest.writeValue(this.standAloneMode);
     dest.writeValue(this.videoPosition);
+    dest.writeValue(this.showImageThumbnail);
   }
 
+  /**
+   * Instantiates a new Step fragment model.
+   *
+   * @param in the in
+   */
   protected StepFragmentModel(Parcel in) {
     this.stepId = in.readString();
     this.currentStepItem = in.readParcelable(StepsItem.class.getClassLoader());
@@ -166,8 +201,12 @@ public class StepFragmentModel implements Parcelable {
     this.previousTitle = in.readString();
     this.standAloneMode = (Boolean) in.readValue(Boolean.class.getClassLoader());
     this.videoPosition = (Long) in.readValue(Long.class.getClassLoader());
+    this.showImageThumbnail = (Boolean) in.readValue(Boolean.class.getClassLoader());
   }
 
+  /**
+   * The constant CREATOR.
+   */
   public static final Creator<StepFragmentModel> CREATOR = new Creator<StepFragmentModel>() {
     @Override
     public StepFragmentModel createFromParcel(Parcel source) {
