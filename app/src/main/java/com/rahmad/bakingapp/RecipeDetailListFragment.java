@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -43,6 +44,12 @@ public class RecipeDetailListFragment extends Fragment {
    */
   @BindView(R.id.step_list)
   RecyclerView stepsList;
+  /**
+   * The Scroll view.
+   */
+  @BindView(R.id.scrollView)
+  ScrollView scrollView;
+
   private Unbinder unbinder;
   private String recipeId;
   private String recipeName;
@@ -67,6 +74,30 @@ public class RecipeDetailListFragment extends Fragment {
     getDataStepsFromDb();
 
     return view;
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putIntArray(Constant.KEY_SCROLL_POSITION,
+        new int[]{scrollView.getScrollX(), scrollView.getScrollY()});
+  }
+
+  @Override
+  public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+    super.onViewStateRestored(savedInstanceState);
+
+    if (savedInstanceState != null) {
+      final int[] position = savedInstanceState.getIntArray(Constant.KEY_SCROLL_POSITION);
+      if (position != null) {
+        scrollView.post(new Runnable() {
+          public void run() {
+            scrollView.scrollTo(position[0], position[1]);
+          }
+        });
+      }
+    }
+
   }
 
   @Override

@@ -75,6 +75,10 @@ public class Constant {
    * The constant KEY_STATE_MODEL.
    */
   public static final String KEY_STATE_MODEL = "stateModel";
+  /**
+   * The constant KEY_SCROLL_POSITION.
+   */
+  public static final String KEY_SCROLL_POSITION = "keyScrollPosition";
 
 
 }
